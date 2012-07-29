@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv='content-type' content='text/html; charset=utf-8' />
+<title>Yet another symbols counter tool</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link href="symbols_counter.css" media="screen" rel="stylesheet" type="text/css" />
+
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="symbols_counter.js"></script>
+
+
+<script language="javascript">
+function doit() {
+  var props = {
+    "total_id": "", // REQUIRED!!! ID of total symols counter result. If empty, then generate rendomly
+    "css_total_text":  "total_text",  // css class for total symols counter text
+    "css_total_count": "total_count", // css class for total symols counter result
+    "css_table":  "reptbl", // css class for table with report
+    "css_report": "report", // css class for table->tr
+    "css_symbol": "symbol", // css class for table->tr->td
+    "css_count":  "count",  // css class for table->tr->td
+    "css_action": "action"  // css class for table->tr->td
+  };
+  var symbolCounter = new SymbolCounter();
+
+
+  $("#counters_form :input").keypress(function(e) {
+    if(e.which == 13) {
+      symbolCounter.doCount(this, "report");
+      return false;
+    }
+  });
+
+  $("#btn_proceed").click( function(){
+    symbolCounter.doCount(this, "report");
+  });
+
+  $("#btn_clear").click( function(){
+    symbolCounter.clearText(this);
+    symbolCounter.clearReport();
+  });
+
+}
+</script>
+
+</head>
+
+<body onload="doit()">
+
+<form id="counters_form" method="POST">
+  <input type="checkbox" name="do_trim" id="do_trim" checked/>
+  <label for="do_trim">Remove trailing spaces, tabs and carriages</label><br />
+
+  <input type="checkbox" name="rm_dup_spaces" id="rm_dup_spaces" />
+  <label for="rm_dup_spaces">Remove duplicated spaces</label><br />
+
+  <input type="checkbox" name="rm_spaces_before_punctuate" id="rm_spaces_before_punctuate" />
+  <label for="rm_spaces_before_punctuate">Remove spaces before punctuate</label><br />
+
+  <input type="checkbox" name="add_spaces_after_punctuate" id="add_spaces_after_punctuate" />
+  <label for="add_spaces_after_punctuate">Add spaces after punctuate</label><br />
+
+  <input type="checkbox" name="registry_sensitive" id="registry_sensitive" checked/>
+  <label for="registry_sensitive">Registry sensitive</label><br />
+
+  <textarea rows="12" name="charcount" cols="60" wrap="virtual"></textarea>
+  <br>
+  <input id="btn_clear" name="btn_clear" type="button" value="clear text">&nbsp;
+  <input id="btn_proceed" name="btn_proceed" type="button" value="Calculate Characters">
+
+  <label for="columns">columns in report:</label>
+  <input type="text" name="columns" id="columns" size="3"/>
+
+  <div id="report"></div>
+
+</form>
+
+
+</body></html>
